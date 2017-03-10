@@ -33,17 +33,4 @@ RUN yum install -y bzip2 git fontconfig \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
   && yum clean all
 
-ENV FABRIC8_USER_NAME=fabric8
-
-RUN useradd --user-group --create-home --shell /bin/false ${FABRIC8_USER_NAME}
-
-ENV HOME=/home/${FABRIC8_USER_NAME}
-
-ENV WORKSPACE=$HOME/ws
-RUN mkdir $WORKSPACE
-RUN chown -R ${FABRIC8_USER_NAME}:${FABRIC8_USER_NAME} $HOME/*
-
-USER ${FABRIC8_USER_NAME}
-WORKDIR $WORKSPACE/
-
 CMD ["/bin/bash"]
