@@ -33,4 +33,5 @@ RUN yum install -y bzip2 git fontconfig \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
   && yum clean all
 
+RUN npm install --global gulp-cli
 CMD ["/bin/bash"]
