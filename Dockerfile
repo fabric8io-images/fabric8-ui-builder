@@ -21,9 +21,9 @@ RUN set -ex \
   done
 
 #ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 6.5.0
+ENV NODE_VERSION 6.10.0
 
-RUN yum install -y bzip2 git fontconfig \
+RUN yum install -y bzip2 git docker fontconfig \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
   && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
@@ -33,5 +33,6 @@ RUN yum install -y bzip2 git fontconfig \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
   && yum clean all
 
+ENV DOCKER_API_VERSION 1.23
 RUN npm install --global gulp-cli
 CMD ["/bin/bash"]
