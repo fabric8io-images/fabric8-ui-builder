@@ -23,15 +23,25 @@ RUN set -ex \
 #ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 6.10.0
 
-RUN yum install -y bzip2 git docker fontconfig \
+RUN yum install -y bzip2 docker fontconfig \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
   && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
   && grep " node-v$NODE_VERSION-linux-x64.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
-  && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
-  && yum clean all
+  && ln -s /usr/local/bin/node /usr/local/bin/nodejs
+
+RUN yum update -y && \
+  yum install -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker && \
+  curl -L https://www.kernel.org/pub/software/scm/git/git-2.8.3.tar.gz | tar xzv && \
+  pushd git-2.8.3 && \
+  make prefix=/usr/ install && \
+  popd && \
+  rm -rf git-2.8.3* && \
+  yum remove -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker && \
+  yum clean all
+  
 
 ENV DOCKER_API_VERSION 1.23
 RUN npm install --global gulp-cli
