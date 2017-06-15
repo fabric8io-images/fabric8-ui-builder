@@ -23,7 +23,14 @@ RUN set -ex \
 #ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 6.10.0
 
-RUN yum install -y bzip2 docker fontconfig \
+RUN yum -y update && \
+    yum install -y java-1.8.0-openjdk nmap-ncat psmisc gtk3 git \
+      python-setuptools xorg-x11-xauth wget unzip which \
+      xorg-x11-server-Xvfb xfonts-100dpi libXfont GConf2 \
+      xorg-x11-fonts-75dpi xfonts-scalable xfonts-cyrillic \
+      ipa-gothic-fonts xorg-x11-utils xorg-x11-fonts-Type1 xorg-x11-fonts-misc
+
+RUN yum install -y bzip2 fontconfig \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
   && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
@@ -33,16 +40,24 @@ RUN yum install -y bzip2 docker fontconfig \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
 RUN yum update -y && \
-  yum install -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker && \
-  curl -L https://www.kernel.org/pub/software/scm/git/git-2.8.3.tar.gz | tar xzv && \
+  yum install -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker
+
+RUN curl -L https://www.kernel.org/pub/software/scm/git/git-2.8.3.tar.gz | tar xzv && \
   pushd git-2.8.3 && \
   make prefix=/usr/ install && \
   popd && \
   rm -rf git-2.8.3* && \
   yum remove -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker && \
   yum clean all
-  
+
+RUN npm install -g jasmine-node protractor
+
+COPY google-chrome.repo /etc/yum.repos.d/google-chrome.repo
+RUN yum install -y xorg-x11-server-Xvfb google-chrome-stable
+
+ENV DISPLAY=:99
 
 ENV DOCKER_API_VERSION 1.23
 RUN npm install --global gulp-cli
+
 CMD ["/bin/bash"]
