@@ -60,4 +60,6 @@ ENV DISPLAY=:99
 ENV DOCKER_API_VERSION 1.23
 RUN npm install --global gulp-cli
 
+RUN webdriver-manager update   
+
 CMD ["/bin/bash"]
