@@ -39,6 +39,14 @@ RUN yum install -y bzip2 fontconfig \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
+ENV PHANTOM_VERSION 2.1.1
+
+RUN curl -LO https://github.com/Medium/phantomjs/releases/download/v$PHANTOM_VERSION/phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 && \
+  tar jxf phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 && \
+  mv phantomjs-$PHANTOM_VERSION-linux-x86_64/bin/phantomjs /usr/bin/phantomjs && \
+  chmod +x /usr/bin/phantomjs && \
+  rm -rf phantomjs-$PHANTOM_VERSION-linux-x86_64 phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2
+
 RUN yum update -y && \
   yum install -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker
 
