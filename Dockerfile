@@ -70,4 +70,7 @@ RUN npm install --global gulp-cli
 
 RUN webdriver-manager update   
 
+RUN mkdir -p /home
+ENV HOME=/home
+
 CMD ["/bin/bash"]
