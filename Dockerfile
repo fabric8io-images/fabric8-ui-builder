@@ -70,7 +70,7 @@ RUN npm install --global gulp-cli
 
 RUN webdriver-manager update   
 
-RUN mkdir -p /home
+RUN mkdir -p /home && chmod g+w /home
 ENV HOME=/home
 
 CMD ["/bin/bash"]
