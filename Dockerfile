@@ -21,7 +21,7 @@ RUN set -ex \
   done
 
 #ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 6.10.0
+ENV NODE_VERSION 8.3.0
 
 RUN yum -y update && \
     yum install -y java-1.8.0-openjdk nmap-ncat psmisc gtk3 git \
