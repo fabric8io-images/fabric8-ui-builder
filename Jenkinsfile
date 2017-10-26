@@ -39,7 +39,7 @@ dockerTemplate{
             }
             def message = "snapshot fabric8-ui-builder image is available for testing.  `docker pull ${snapshotImageName}`"
             container('docker'){
-                flow.addCommentToPullRequest(message, pr, project)
+                flow.addCommentToPullRequest(message, pr, 'fabric8-ui/fabric8-ui-builder')
             }
         }
       } else if (utils.isCD()){
