@@ -47,15 +47,17 @@ RUN curl -LO https://github.com/Medium/phantomjs/releases/download/v$PHANTOM_VER
   chmod +x /usr/bin/phantomjs && \
   rm -rf phantomjs-$PHANTOM_VERSION-linux-x86_64 phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2
 
+RUN yum groupinstall -y 'Development Tools'
+
 RUN yum update -y && \
-  yum install -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker
+  yum install -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker gcc-c++
 
 RUN curl -L https://www.kernel.org/pub/software/scm/git/git-2.8.3.tar.gz | tar xzv && \
   pushd git-2.8.3 && \
   make prefix=/usr/ install && \
   popd && \
   rm -rf git-2.8.3* && \
-  yum remove -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker && \
+  yum remove -y make curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker && \
   yum clean all
 
 RUN npm install -g jasmine-node protractor
